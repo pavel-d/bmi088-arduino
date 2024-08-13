@@ -1,25 +1,22 @@
 /*
-* Brian R Taylor
-* brian.taylor@bolderflight.com
-* 
-* Copyright (c) 2021 Bolder Flight Systems
-* 
-* Permission is hereby granted, free of charge, to any person obtaining a copy of this software 
-* and associated documentation files (the "Software"), to deal in the Software without restriction, 
-* including without limitation the rights to use, copy, modify, merge, publish, distribute, 
-* sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is 
-* furnished to do so, subject to the following conditions:
-* 
-* The above copyright notice and this permission notice shall be included in all copies or 
-* substantial portions of the Software.
-* 
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING 
-* BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
-* NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
-* DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
-* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+  Brian R Taylor
+  brian.taylor@bolderflight.com
+  
+  Copyright (c) 2018 Bolder Flight Systems
+  
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
 
 #include "BMI088.h"
 
@@ -598,9 +595,12 @@ Bmi088Accel::Bmi088Accel(TwoWire &bus,uint8_t address)
 }
 
 /* BMI088 object, input the SPI bus and chip select pin */
-Bmi088Accel::Bmi088Accel(SPIClass &bus,uint8_t csPin)
+Bmi088Accel::Bmi088Accel(SPIClass &bus, uint8_t sckPin, uint8_t misoPin, uint8_t mosiPin, uint8_t csPin)
 {
   _spi = &bus; // SPI bus
+  _sckPin = sckPin;
+  _misoPin = misoPin;
+  _mosiPin = mosiPin;
   _csPin = csPin; // chip select pin
   _useSPI = true; // set to use SPI
 }
@@ -613,7 +613,7 @@ int Bmi088Accel::begin()
     pinMode(_csPin,OUTPUT);
     digitalWrite(_csPin,HIGH);
     // begin SPI communication
-    _spi->begin();
+    _spi->begin(_sckPin, _misoPin, _mosiPin, _csPin);
   } else {
     /* starting the I2C bus */
     _i2c->begin();
@@ -1209,9 +1209,12 @@ Bmi088Gyro::Bmi088Gyro(TwoWire &bus,uint8_t address)
 }
 
 /* BMI088 object, input the SPI bus and chip select pin */
-Bmi088Gyro::Bmi088Gyro(SPIClass &bus,uint8_t csPin)
+Bmi088Gyro::Bmi088Gyro(SPIClass &bus,uint8_t sckPin, uint8_t misoPin, uint8_t mosiPin, uint8_t csPin)
 {
   _spi = &bus; // SPI bus
+  _sckPin = sckPin;
+  _misoPin = misoPin;
+  _mosiPin = mosiPin;
   _csPin = csPin; // chip select pin
   _useSPI = true; // set to use SPI
 }
@@ -1225,7 +1228,7 @@ int Bmi088Gyro::begin()
     // setting CS pin high
     digitalWrite(_csPin,HIGH);
     // begin SPI communication
-    _spi->begin();
+    _spi->begin(_sckPin, _misoPin, _mosiPin, _csPin);
   } else {
     /* starting the I2C bus */
     _i2c->begin();
@@ -1531,10 +1534,10 @@ Bmi088::Bmi088(TwoWire &bus,uint8_t accel_addr,uint8_t gyro_addr)
 }
 
 /* BMI088 object, input the SPI bus and chip select pin */
-Bmi088::Bmi088(SPIClass &bus,uint8_t accel_cs,uint8_t gyro_cs)
+Bmi088::Bmi088(SPIClass &bus, uint8_t sckPin, uint8_t misoPin, uint8_t mosiPin, uint8_t accel_cs, uint8_t gyro_cs)
 {
-  accel = new Bmi088Accel(bus,accel_cs);
-  gyro = new Bmi088Gyro(bus,gyro_cs);
+  accel = new Bmi088Accel(bus, sckPin, misoPin, mosiPin, accel_cs);
+  gyro = new Bmi088Gyro(bus, sckPin, misoPin, mosiPin, gyro_cs);
 }
 
 int Bmi088::begin()

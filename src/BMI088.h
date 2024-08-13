@@ -1,25 +1,22 @@
 /*
-* Brian R Taylor
-* brian.taylor@bolderflight.com
-* 
-* Copyright (c) 2021 Bolder Flight Systems
-* 
-* Permission is hereby granted, free of charge, to any person obtaining a copy of this software 
-* and associated documentation files (the "Software"), to deal in the Software without restriction, 
-* including without limitation the rights to use, copy, modify, merge, publish, distribute, 
-* sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is 
-* furnished to do so, subject to the following conditions:
-* 
-* The above copyright notice and this permission notice shall be included in all copies or 
-* substantial portions of the Software.
-* 
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING 
-* BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
-* NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
-* DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
-* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+  Brian R Taylor
+  brian.taylor@bolderflight.com
+  
+  Copyright (c) 2018 Bolder Flight Systems
+  
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
 
 #ifndef BMI088_h
 #define BMI088_h
@@ -71,7 +68,7 @@ class Bmi088Accel {
       ACTIVE_LOW
     };
     Bmi088Accel(TwoWire &bus,uint8_t address);
-    Bmi088Accel(SPIClass &bus,uint8_t csPin);
+    Bmi088Accel(SPIClass &bus, uint8_t sckPin, uint8_t misoPin, uint8_t mosiPin, uint8_t csPin);
     int begin();
     bool setOdr(Odr odr);
     bool setRange(Range range);
@@ -101,6 +98,9 @@ class Bmi088Accel {
     const uint32_t _i2cRate = 400000; // 400 kHz
     // spi
     uint8_t _csPin;
+    uint8_t _sckPin;
+    uint8_t _misoPin;
+    uint8_t _mosiPin;
     SPIClass *_spi;
     bool _useSPI;
     const uint8_t SPI_READ = 0x80;
@@ -231,8 +231,8 @@ class Bmi088Gyro {
       ACTIVE_HIGH,
       ACTIVE_LOW
     };
-    Bmi088Gyro(TwoWire &bus,uint8_t address);
-    Bmi088Gyro(SPIClass &bus,uint8_t csPin);
+    Bmi088Gyro(TwoWire &bus, uint8_t address);
+    Bmi088Gyro(SPIClass &bus, uint8_t sckPin, uint8_t misoPin, uint8_t mosiPin, uint8_t csPin);
     int begin();
     bool setOdr(Odr odr);
     bool setRange(Range range);
@@ -258,6 +258,9 @@ class Bmi088Gyro {
     const uint32_t _i2cRate = 400000; // 400 kHz
     // spi
     uint8_t _csPin;
+    uint8_t _sckPin;
+    uint8_t _misoPin;
+    uint8_t _mosiPin;
     SPIClass *_spi;
     bool _useSPI;
     const uint8_t SPI_READ = 0x80;
@@ -367,7 +370,7 @@ class Bmi088 {
       ACTIVE_LOW
     };
     Bmi088(TwoWire &bus,uint8_t accel_addr,uint8_t gyro_addr);
-    Bmi088(SPIClass &bus,uint8_t accel_cs,uint8_t gyro_cs);
+    Bmi088(SPIClass &bus,uint8_t sckPin, uint8_t misoPin, uint8_t mosiPin, uint8_t accel_cs,uint8_t gyro_cs);
     int begin();
     bool setOdr(Odr odr);
     bool setRange(AccelRange accel_range,GyroRange gyro_range);
