@@ -63,8 +63,8 @@ class Bmi088Accel {
       ODR_12_5HZ_BW_1HZ
     };
     enum PinMode {
-      PUSH_PULL,
-      OPEN_DRAIN
+      PUSH_PULL_PIN,
+      OPEN_DRAIN_PIN
     };
     enum PinLevel {
       ACTIVE_HIGH,
@@ -224,8 +224,8 @@ class Bmi088Gyro {
       ODR_100HZ_BW_32HZ = 0x87
     };
     enum PinMode {
-      PUSH_PULL,
-      OPEN_DRAIN
+      PUSH_PULL_PIN,
+      OPEN_DRAIN_PIN
     };
     enum PinLevel {
       ACTIVE_HIGH,
@@ -359,8 +359,8 @@ class Bmi088 {
       PIN_4
     };
     enum PinMode {
-      PUSH_PULL,
-      OPEN_DRAIN
+      PUSH_PULL_PIN,
+      OPEN_DRAIN_PIN
     };
     enum PinLevel {
       ACTIVE_HIGH,
