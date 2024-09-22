@@ -613,7 +613,7 @@ int Bmi088Accel::begin()
     pinMode(_csPin,OUTPUT);
     digitalWrite(_csPin,HIGH);
     // begin SPI communication
-    _spi->begin(_sckPin, _misoPin, _mosiPin, _csPin);
+    _spi->begin(_csPin);
   } else {
     /* starting the I2C bus */
     _i2c->begin();
@@ -1228,7 +1228,7 @@ int Bmi088Gyro::begin()
     // setting CS pin high
     digitalWrite(_csPin,HIGH);
     // begin SPI communication
-    _spi->begin(_sckPin, _misoPin, _mosiPin, _csPin);
+    _spi->begin(_csPin);
   } else {
     /* starting the I2C bus */
     _i2c->begin();
